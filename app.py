@@ -56,6 +56,26 @@ class Request(db.Model):
     phone = db.Column(db.String(20), nullable=False)
 
 
+def fill_data():
+    with open("profiles.json", encoding="utf-8") as f:
+        profiles = json.load(f)
+
+    for profile in profiles:
+        profile_db = Profile(name=profile['name'], about=profile['about'],
+                             rating=profile['rating'], picture=profile['picture'],
+                             price=profile['price'], goals=json.dumps(profile['goals']),
+                             free=json.dumps(profile['free']))
+        db.session.add(profile_db)
+    db.session.commit()
+
+
+try:
+    if not db.session.query(Profile).all():
+        fill_data()
+except ProgrammingError:
+    # для гладкой миграции
+    pass
+
 goals = {"travel": "Для путешествий", "study": "Для учебы", "work": "Для работы", "relocate": "Для переезда"}
 
 days_of_week = {"mon": "Понедельник", "tue": "Вторник", "wed": "Среда",
