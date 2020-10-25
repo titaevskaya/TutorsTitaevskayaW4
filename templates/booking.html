@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block container %}
+  <main class="container mt-3">
+    <div class="row mt-5">
+      <div class="col-10 col-md-6 offset-1 offset-md-3 mb-3">
+        <form action="/booking/{{ id }}/{{ day_week }}/{{ time }}/" method="POST" class="card mb-3">
+          {{ form.csrf_token }}
+          <div class="card-body text-center pt-5">
+            <img src="{{ teacher.picture }}" class="mb-3" width="95" alt="">
+            <h2 class="h5 card-title mt-2 mb-2">{{ teacher.name }}</h2>
+            <p class="my-1">Запись на пробный урок</p>
+            <p class="my-1">{{ days_of_week[day_week] }}, {{ time }}</p>
+          </div>
+          <hr />
+          <div class="card-body mx-3">
+              <div class="row">
+                {% for err in form.weekday.errors %}
+                  <p class="error">{{ err }}</p>
+                {% endfor %}
+                {{ form.weekday(class="form-control", type="hidden")}}
+                {% for err in form.time.errors %}
+                  <p class="error">{{ err }}</p>
+                {% endfor %}
+                {{ form.time(class="form-control", type="hidden")}}
+                {% for err in form.teacher.errors %}
+                  <p class="error">{{ err }}</p>
+                {% endfor %}
+                {{ form.teacher(class="form-control", type="hidden")}}
+              </div>
+            <label class="mb-1 mt-2" >Вас зовут</label>
+            {% for err in form.name.errors %}
+                  <p class="error">{{ err }}</p>
+            {% endfor %}
+            {{ form.name(class="form-control", type="text")}}
+            <label class="mb-1 mt-2" >Ваш телефон</label>
+            {% for err in form.phone.errors %}
+                  <p class="error">{{ err }}</p>
+            {% endfor %}
+            {{ form.phone(class="form-control", type="tel")}}
+            <input type="submit" class="btn btn-primary btn-block mt-4" value="Записаться на пробный урок">
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+{% endblock %}

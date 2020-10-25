@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block container %}
+  <main class="container mt-5">
+    <div class="col-12 col-sm-10 col-lg-6 offset-lg-3 offset-sm-1">
+      <form action="/request/" method="POST" class="card mb-5">
+        {{ form.csrf_token }}
+        <div class="card-body text-center pt-5">
+          <h1 class="h3 card-title mt-4 mb-2">Подбор преподавателя</h1>
+          <p class="px-5">Напишите, чего вам нужно и&nbsp;мы&nbsp;подберем отличных&nbsp;ребят</p>
+        </div>
+        <hr>
+        <div class="card-body mx-3">
+          <div class="row">
+            <div class="col">
+              <p>Какая цель занятий?</p>
+              {% for goal in form.goal %}
+                <div class="form-check ">
+                  {{ goal(type="radio", class="form-check-input", )}}
+                <label class="form-check-label">
+                  {{ goals[goal.data] }}
+                </label> 
+              </div>
+              {% endfor %}
+            </div>
+            <div class="col">
+              <p>Сколько времени есть?</p>
+              {% for time in form.time %}
+                <div class="form-check ">
+                  {{ time(type="radio", class="form-check-input")}}
+                <label class="form-check-label">
+                  {{ time.data }}
+                </label>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card-body mx-3">
+          <label class="mb-1 mt-2">Вас зовут</label>
+          {% for err in form.name.errors %}
+             <p class="error">{{ err }}</p>
+          {% endfor %}
+          {{ form.name(class="form-control", type="text", placeholder="")}}
+          <label class="mb-1 mt-2">Ваш телефон</label>
+          {% for err in form.phone.errors %}
+              <p class="error">{{ err }}</p>
+          {% endfor %}
+          {{ form.phone(class="form-control", type="tel")}}
+          <input type="submit" class="btn btn-primary mt-4 mb-2" value="Найдите мне преподавателя">
+        </div>
+      </form>
+    </div>
+  </main>
+{% endblock %}
